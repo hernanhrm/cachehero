@@ -2,7 +2,6 @@ package cachehero
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"time"
@@ -20,12 +19,7 @@ func newRedis(conn *redis.Client) *Redis {
 }
 
 func (r Redis) Set(key string, value interface{}, expiration time.Duration) error {
-	valueBytes, err := json.Marshal(value)
-	if err != nil {
-		return fmt.Errorf("redis: could not prepare value to set with key %s, %w", key, err)
-	}
-
-	if err := r.conn.Set(r.defaultContext, key, valueBytes, expiration).Err(); err != nil {
+	if err := r.conn.Set(r.defaultContext, key, value, expiration).Err(); err != nil {
 		return fmt.Errorf("redis: could not set key %s, %w", key, err)
 	}
 
