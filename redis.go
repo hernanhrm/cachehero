@@ -26,13 +26,13 @@ func (r Redis) Set(key string, value interface{}, expiration time.Duration) erro
 	return nil
 }
 
-func (r Redis) Get(key string) (interface{}, error) {
+func (r Redis) Get(key string) (string, error) {
 	value, err := r.conn.Get(r.defaultContext, key).Result()
 	if errors.Is(err, redis.Nil) {
-		return nil, fmt.Errorf("redis: %w", ErrNotFound)
+		return "", fmt.Errorf("redis: %w", ErrNotFound)
 	}
 	if err != nil {
-		return nil, fmt.Errorf("redis: could not get the key %s, %w", key, err)
+		return "", fmt.Errorf("redis: could not get the key %s, %w", key, err)
 	}
 
 	return value, nil
@@ -40,7 +40,7 @@ func (r Redis) Get(key string) (interface{}, error) {
 
 func (r Redis) Del(key string) error {
 	if err := r.conn.Del(r.defaultContext, key); err != nil {
-		return fmt.Errorf("redis: could not delete key %s, %w", key, err)
+		return fmt.Errorf("redis: could not delete key %s, %v", key, err)
 	}
 
 	return nil

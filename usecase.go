@@ -37,10 +37,10 @@ func (c CacheHero) Set(key string, value interface{}, exp time.Duration) error {
 	return nil
 }
 
-func (c CacheHero) Get(key string) (interface{}, error) {
+func (c CacheHero) Get(key string) (string, error) {
 	value, err := c.client.Get(key)
 	if err != nil {
-		return nil, fmt.Errorf("cachehero: %w", err)
+		return "", fmt.Errorf("cachehero: %w", err)
 	}
 
 	return value, nil
