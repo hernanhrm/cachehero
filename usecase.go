@@ -46,6 +46,26 @@ func (c CacheHero) Get(key string) (string, error) {
 	return value, nil
 }
 
+func (c CacheHero) MGet(keys ...string) (map[string]string, error) {
+	values, err := c.client.MGet(keys...)
+	if err != nil {
+		return nil, fmt.Errorf("cachehero: %w", err)
+	}
+
+	valuesMap := make(map[string]string)
+	if len(values) == len(keys) {
+		for i := range values {
+			if values[i] == nil {
+				valuesMap[keys[i]] = ""
+				continue
+			}
+			valuesMap[keys[i]] = values[i].(string)
+		}
+	}
+
+	return valuesMap, nil
+}
+
 func (c CacheHero) Del(key string) error {
 	if err := c.client.Del(key); err != nil {
 		return fmt.Errorf("cachehero: %w", err)
