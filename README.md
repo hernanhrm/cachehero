@@ -50,6 +50,21 @@ func main() {
 	if err != nil {
 		log.Fatal(err) // will print an error because the key does not exist
 	}
+
+	if err := cache.Set("my-key-one", "one-value", 0); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := cache.Set("my-key-two", "second-value", 0); err != nil {
+		log.Fatal(err)
+	}
+
+	values, err := cache.MGet("my-key-one", "my-key-two")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(values)//will print map[my-key-one:one-value my-key-two:second-value]
 }
 
 ```
