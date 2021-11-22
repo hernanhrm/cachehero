@@ -38,6 +38,15 @@ func (r Redis) Get(key string) (string, error) {
 	return value, nil
 }
 
+func (r Redis) MGet(keys ...string) ([]interface{}, error) {
+	value, err := r.conn.MGet(r.defaultContext, keys...).Result()
+	if err != nil {
+		return nil, fmt.Errorf("redis: could not get the keys %s, %w", keys, err)
+	}
+
+	return value, nil
+}
+
 func (r Redis) Del(key string) error {
 	if err := r.conn.Del(r.defaultContext, key); err != nil {
 		return fmt.Errorf("redis: could not delete key %s, %v", key, err)

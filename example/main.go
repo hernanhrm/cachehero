@@ -1,21 +1,3 @@
-## Cache Hero
-
-It's a package that will help us to manage the basic things of cache clients like Redis and Memcached. The package
-contains use cases to connect to the clients and to do the crud operations for the available cache clients.
-
-### Available cache clients
-
-1. [Redis](https://github.com/go-redis/redis)
-
-### Installation
-
-```bash
-  go get github.com/hernanhrm/cachehero
-```
-
-### Quickstart
-
-```go
 package main
 
 import (
@@ -64,7 +46,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(values)//will print map[my-key-one:one-value my-key-two:second-value]
+	fmt.Println(values) // will print map[my-key-one:one-value my-key-two:second-value]
 }
-
-```
