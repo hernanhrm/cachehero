@@ -46,5 +46,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(values)//will print map[my-key-one:one-value my-key-two:second-value]
+	fmt.Println(values) // will print map[my-key-one:one-value my-key-two:second-value]
 }
