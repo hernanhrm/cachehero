@@ -47,10 +47,26 @@ func (r Redis) MGet(keys ...string) ([]interface{}, error) {
 	return value, nil
 }
 
-func (r Redis) Del(key string) error {
-	if err := r.conn.Del(r.defaultContext, key); err != nil {
+func (r Redis) Del(key ...string) error {
+	err := r.conn.Del(r.defaultContext, key...).Err()
+	if errors.Is(err, redis.Nil) {
+		return ErrNotFound
+	}
+	if err != nil {
 		return fmt.Errorf("redis: could not delete key %s, %v", key, err)
 	}
 
 	return nil
+}
+
+func (r Redis) Scan(pattern string, limit int64) ([]string, error) {
+	keys, _, err := r.conn.Scan(r.defaultContext, 0, pattern, limit).Result()
+	if errors.Is(err, redis.Nil) {
+		return nil, ErrNotFound
+	}
+	if err != nil {
+		return nil, fmt.Errorf("redis: could not get keys with the pattern %s, %v", pattern, err)
+	}
+
+	return keys, nil
 }
