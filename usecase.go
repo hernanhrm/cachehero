@@ -68,12 +68,21 @@ func (c CacheHero) MGet(keys ...string) (map[string]string, error) {
 	return valuesMap, nil
 }
 
-func (c CacheHero) Del(key string) error {
-	if err := c.client.Del(key); err != nil {
+func (c CacheHero) Del(key ...string) error {
+	if err := c.client.Del(key...); err != nil {
 		return fmt.Errorf("cachehero: %w", err)
 	}
 
 	return nil
+}
+
+func (c CacheHero) Scan(pattern string, limit int64) ([]string, error) {
+	keys, err := c.client.Scan(pattern, limit)
+	if err != nil {
+		return nil, fmt.Errorf("cachehero: %w", err)
+	}
+
+	return keys, nil
 }
 
 func isPrimitiveType(value interface{}) bool {
