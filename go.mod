@@ -2,4 +2,4 @@ module github.com/hernanhrm/cachehero
 
 go 1.16
 
-require github.com/go-redis/redis/v8 v8.11.4
+require github.com/go-redis/redis/v9 v9.0.0-beta.1
